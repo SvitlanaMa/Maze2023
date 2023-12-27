@@ -58,7 +58,19 @@ pers = Pers(250, 250, 50, 50, pers_img, 5)
 gold_img = pygame.image.load("treasure.png")
 gold = GameSprite(win_w - 60, win_h - 60, 50, 50, gold_img)
 
+blocks = list()
+block_img = pygame.image.load("block.jpg")
+block_size = 40
+x, y = 0, 0
 
+for line in lvl:
+    for s in line:
+        if s == "1":
+            block = GameSprite(x, y, block_size, block_size, block_img)
+            blocks.append(block)
+        x += 40
+    x = 0
+    y += 40
 
 
 game = True
@@ -70,6 +82,12 @@ while game:
         pers.move(pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s)
         pers.update()
         gold.update()
+        for block in blocks:
+            block.update()
+            if pers.rect.colliderect(block.rect):
+                game = False
+
+
         
     
     for event in pygame.event.get():
